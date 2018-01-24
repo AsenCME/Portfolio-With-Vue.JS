@@ -2,12 +2,12 @@
   <div>
     <div class="menu">
         <div @click="linkTo('projects')" class="link">Projects</div>
-        <div class="link homeLink">
-          <div class="line left"></div>
-          <i class="material-icons home" :class="{hovered: isHovered}">home</i>
+        <div class="link homeLink" :class="{condense: isHoveredHome}">
+          <div class="line left" :class="{move: isHoveredHome}"></div>
+          <i class="material-icons home" :class="{hoveredHome: isHoveredHome}">home</i>
           <i class="material-icons free" @mouseover="mouseOver()" @mouseout="mouseOut()">crop_free</i>
           <i class="material-icons square" @mouseover="mouseOver()" @mouseout="mouseOut()">crop_square</i>
-          <div class="line right"></div>
+          <div class="line right" :class="{move: isHoveredHome}"></div>
         </div>
         <div class="link">Contact</div>
       </div>
@@ -18,7 +18,7 @@ export default {
   name: "navbar-component",
   data() {
     return {
-      isHovered: false,
+      isHoveredHome: true,
     };
   },
   methods: {
@@ -26,10 +26,10 @@ export default {
       this.$router.push(`/${route}`);
     },
     mouseOver() {
-      this.isHovered = true;
+      this.isHoveredHome = true;
     },
     mouseOut() {
-      this.isHovered = false;
+      this.isHoveredHome = false;
     },
   },
 };
