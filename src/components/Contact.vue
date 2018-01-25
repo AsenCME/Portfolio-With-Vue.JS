@@ -1,13 +1,11 @@
 <template>
-  <div id="Project">
-      Project Component
+  <div id="contact">
+      Contact Component
   </div>
 </template>
 
 <script>
-export default {
-  name: "projects-component",
-};
+export default {};
 </script>
 
 <style lang="sass" scoped>

@@ -12,7 +12,7 @@ export default {
   name: "app",
   data() {
     return {
-      bgcolor: 0,
+      bgcolor: 20,
       isGoingUp: true,
     };
   },
@@ -29,12 +29,12 @@ export default {
         $("body").css("background", `rgb(${this.bgcolor}, ${this.bgcolor}, ${this.bgcolor})`);
         if (this.isGoingUp) this.bgcolor++;
         else this.bgcolor--;
-        if (this.bgcolor === 50 || this.bgcolor === 0) this.isGoingUp = !this.isGoingUp;
+        if (this.bgcolor === 50 || this.bgcolor === 20) this.isGoingUp = !this.isGoingUp;
       }, 100);
     },
     scroll() {
       document.addEventListener("DOMContentLoaded", function() {
-        $("#app").mCustomScrollbar({
+        $("body").mCustomScrollbar({
           axis: "y",
           theme: "light-thin",
           autoHideScrollbar: false,

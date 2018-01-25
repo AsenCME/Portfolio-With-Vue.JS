@@ -1,3 +1,5 @@
+$easeInOutBack: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
 .wrap
   position: fixed
   bottom: 0px
@@ -11,9 +13,39 @@
     text-transform: uppercase
     font-size: 18px
     margin: 0px 10px
+    cursor: pointer
+    z-index: 2
   .homeLink
-    width: 10px
-    height: 10px
+    width: 15px
+    cursor: pointer
+    z-index: 1
+    height: 15px
     border-radius: 50%
+    border: 0.5px solid transparent
+    transition: .5s $easeInOutBack .15s
     background: white
-    margin: 0px 10px
+    margin: 0px 20px
+
+.hoveredLeft > .homeLink
+  height: 2px
+  border-radius: 0
+  transform: scaleX(6.5) translateX(-12.5px)
+  
+.hoveredRight > .homeLink
+  height: 2px
+  border-radius: 0
+  transform: scaleX(6) translateX(13px)
+
+.hoveredHome > .homeLink
+  transform: scale(2.5)
+  background: none
+  border: 0.5px solid white
+
+.letter-up
+  margin-top: -100px
+
+// TODO: Change Text to Close
+// TODO: Animate letters up and then from below
+// TODO: Click again to reurn to previous state
+
+// Maybe animations???
