@@ -1,17 +1,15 @@
 <template>
-  <div>
-    {{ title }}
+  <div id="home">
+    Home Component
   </div>
 </template>
 
 <script>
 export default {
   name: "home-component",
-  data() {
-    return {
-      title: "Home Component",
-    };
-  },
-  methods: {},
 };
 </script>
+
+<style lang="sass" scoped>
+@import '../styles/home.sass'
+</style>

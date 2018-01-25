@@ -1,5 +1,11 @@
 <template>
-  
+  <div>
+    <nav class="wrap">
+      <div class="link leftLink">projects</div>
+      <div class="homeLink"></div>
+      <div class="link rightLink">contact</div>
+    </nav>
+  </div>
 </template>
 
 <script>

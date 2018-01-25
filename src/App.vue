@@ -12,7 +12,7 @@ export default {
   name: "app",
   data() {
     return {
-      bgcolor: 20,
+      bgcolor: 0,
       isGoingUp: true,
     };
   },
@@ -20,12 +20,43 @@ export default {
     NavbarComponent,
   },
   mounted() {
-    window.setInterval(() => {
-      $("body").css("background", `rgb(0, 0, ${this.bgcolor})`);
-      if (this.isGoingUp) this.bgcolor++;
-      else this.bgcolor--;
-      if (this.bgcolor === 70 || this.bgcolor === 20) this.isGoingUp = !this.isGoingUp;
-    }, 200);
+    this.animateBackground();
+    this.scroll();
+  },
+  methods: {
+    animateBackground() {
+      window.setInterval(() => {
+        $("body").css("background", `rgb(${this.bgcolor}, ${this.bgcolor}, ${this.bgcolor})`);
+        if (this.isGoingUp) this.bgcolor++;
+        else this.bgcolor--;
+        if (this.bgcolor === 50 || this.bgcolor === 0) this.isGoingUp = !this.isGoingUp;
+      }, 100);
+    },
+    scroll() {
+      document.addEventListener("DOMContentLoaded", function() {
+        $("#app").mCustomScrollbar({
+          axis: "y",
+          theme: "light-thin",
+          autoHideScrollbar: false,
+          autoExpandScrollbar: true,
+          mouseWheel: {
+            eneable: true,
+            preventDefault: true,
+            normalizeDelta: true,
+            scrollAmount: 150,
+          },
+          scrollButtons: {
+            enable: true,
+            scrollType: "stepless",
+          },
+          keyboard: {
+            enable: true,
+            scrollType: "stepless",
+          },
+          documentTouchScroll: true,
+        });
+      });
+    },
   },
 };
 </script>
