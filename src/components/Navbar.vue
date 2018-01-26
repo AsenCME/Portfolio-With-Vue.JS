@@ -7,11 +7,11 @@
                  constantLeft: isClickedLeft, 
                  constantRight: isClickedRight}"
     >
-      <div class="link leftLink" @mouseover="mouseOver(0)" @mouseout="mouseOut(0)" @click="linkTo('projects');select(0)">
+      <div class="link leftLink" @mouseover="mouseOver(0)" @mouseout="mouseOut(0)" @click="select('projects', 0)">
         <span v-for="(letter, index) of leftText" v-bind:key="index" class="letter">{{letter}}</span>
       </div>
       <div class="homeLink" @mouseover="mouseOver(1)" @mouseout="mouseOut(1)" @click="linkTo('')"></div>
-      <div class="link rightLink" @mouseover="mouseOver(2)" @mouseout="mouseOut(2)" @click="linkTo('contact');select(1)">
+      <div class="link rightLink" @mouseover="mouseOver(2)" @mouseout="mouseOut(2)" @click="select('contact', 2)">
         <span v-for="(letter, index) of rightText" v-bind:key="index" class="letter">{{letter}}</span>
       </div>
     </nav>
@@ -19,6 +19,11 @@
 </template>
 
 <script>
+//
+// TODO: Home button also changes
+// TODO: Swap component at the right time
+// TODO: Animation ofr swapping components
+//
 export default {
   name: "navbar-component",
   data() {
@@ -30,9 +35,23 @@ export default {
       isClickedRight: false,
       isHoveredRight: false,
       isHoveredHome: false,
+      linkToGoTo: "",
     };
   },
+  mounted() {
+    this.checkPath();
+  },
   methods: {
+    checkPath() {
+      let path = this.$route.path;
+      if (path === "/projects") {
+        this.leftText = "CLOSE";
+        this.isClickedLeft = true;
+      } else if (path === "/contacts") {
+        this.rightText = "CLOSE";
+        this.isClickedRight = true;
+      }
+    },
     mouseOver(side) {
       if (side === 0 && !this.isClickedLeft) this.isHoveredLeft = true;
       else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
@@ -52,18 +71,23 @@ export default {
         this.isHoveredRight = false;
       }
     },
-    linkTo(link) {
-      this.$router.push("/" + link);
+    linkTo() {
+      if (this.leftText === "CLOSE" || this.rightText === "CLOSE") {
+        this.$router.push("/");
+      } else {
+        this.$router.push("/" + this.linkToGoTo);
+      }
     },
-    select(side) {
+    select(link, side) {
+      this.linkToGoTo = link;
       if (side === 0) {
         if (this.isClickedLeft) {
           this.changeState(0, false);
         } else this.changeState(0, true);
-      } else {
+      } else if (side === 2) {
         if (this.isClickedRight) {
-          this.changeState(1, false);
-        } else this.changeState(1, true);
+          this.changeState(2, false);
+        } else this.changeState(2, true);
       }
     },
     changeState(side, state) {
@@ -76,7 +100,7 @@ export default {
         this.isClickedRight = state;
         this.isHoveredRight = false;
         if (state === true) this.changeText("CLOSE", 1, 500);
-        else this.changeText("CONTACTS", 1);
+        else this.changeText("CONTACTS", 2);
       }
     },
     changeText(text, side, delay = 0) {
@@ -85,10 +109,12 @@ export default {
       if (side === 0) {
         setTimeout(() => {
           this.animateChange(text, delayLetters, 0);
+          this.linkTo();
         }, delay);
       } else {
         setTimeout(() => {
           this.animateChange(text, delayLetters, 1);
+          this.linkTo();
         }, delay);
       }
     },

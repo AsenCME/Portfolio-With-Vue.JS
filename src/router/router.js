@@ -4,7 +4,7 @@ import Router from "vue-router";
 // Components
 import Home from "../components/Home.vue";
 import Projects from "../components/Projects.vue";
-import Contact from "../components/Contact.vue";
+import Contacts from "../components/Contact.vue";
 
 Vue.use(Router);
 
@@ -21,8 +21,8 @@ const router = new Router({
       component: Projects,
     },
     {
-      path: "/contact",
-      component: Contact,
+      path: "/contacts",
+      component: Contacts,
     },
     {
       path: "**",
