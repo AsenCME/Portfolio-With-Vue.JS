@@ -30,7 +30,7 @@ export default {
         if (this.isGoingUp) this.bgcolor++;
         else this.bgcolor--;
         if (this.bgcolor === 50 || this.bgcolor === 20) this.isGoingUp = !this.isGoingUp;
-      }, 100);
+      }, 200);
     },
     scroll() {
       document.addEventListener("DOMContentLoaded", function() {

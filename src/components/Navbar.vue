@@ -8,11 +8,11 @@
                  constantRight: isClickedRight}"
     >
       <div class="link leftLink" @mouseover="mouseOver(0)" @mouseout="mouseOut(0)" @click="linkTo('projects');select(0)">
-        <span v-for="(letter, index) of leftText" v-bind:key="index">{{letter}}</span>
+        <span v-for="(letter, index) of leftText" v-bind:key="index" class="letter">{{letter}}</span>
       </div>
       <div class="homeLink" @mouseover="mouseOver(1)" @mouseout="mouseOut(1)" @click="linkTo('')"></div>
       <div class="link rightLink" @mouseover="mouseOver(2)" @mouseout="mouseOut(2)" @click="linkTo('contact');select(1)">
-        <span v-for="(letter, index) of rightText" v-bind:key="index">{{letter}}</span>
+        <span v-for="(letter, index) of rightText" v-bind:key="index" class="letter">{{letter}}</span>
       </div>
     </nav>
   </div>
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       leftText: "PROJECTS",
-      rightText: "CONTACT",
+      rightText: "CONTACTS",
       isHoveredLeft: false,
       isClickedLeft: false,
       isClickedRight: false,
@@ -35,47 +35,102 @@ export default {
   methods: {
     mouseOver(side) {
       if (side === 0 && !this.isClickedLeft) this.isHoveredLeft = true;
-      else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) this.isHoveredHome = true;
-      else if (side === 2 && !this.isClickedRight) this.isHoveredRight = true;
-      let posLeft = $(".leftLink").position().left;
+      else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
+        this.isHoveredHome = true;
+        let wrap = $(".wrap");
+        $(".wrap").css("overflow-y", "visible");
+      } else if (side === 2 && !this.isClickedRight) this.isHoveredRight = true;
     },
     mouseOut(side) {
       if (side === 0) this.isHoveredLeft = false;
-      else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) this.isHoveredHome = false;
-      else this.isHoveredRight = false;
+      else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
+        this.isHoveredHome = false;
+        setTimeout(() => {
+          $(".wrap").css("overflow-y", "hidden");
+        }, 500);
+      } else this.isHoveredRight = false;
     },
     linkTo(link) {
       this.$router.push("/" + link);
     },
     select(side) {
       if (side === 0) {
-        this.isClickedLeft = true;
-        this.isHoveredLeft = false;
-        window.setTimeout(() => {
-          this.changeText("CLOSE", 0);
-        }, 450);
+        if (this.isClickedLeft) {
+          this.changeState(0, false);
+        } else this.changeState(0, true);
       } else {
-        this.isClickedRight = true;
-        this.isHoveredRight = false;
-        window.setTimeout(() => {
-          this.changeText("CLOSE", 1);
-        }, 450);
+        if (this.isClickedRight) {
+          this.changeState(1, false);
+        } else this.changeState(1, true);
       }
     },
-    // TODO: Change Text to Close
-    // TODO: Animate letters up and then from below
-    // TODO: Click again to reurn to previous state
-    changeText(text, side) {
+    changeState(side, state) {
       if (side === 0) {
-        $(".leftLink")
-          .children()
-          .each(function(index, letter) {
-            setTimeout(() => {
-              $(this).addClass("letter-up");
-            }, index * 20);
-          });
+        this.isClickedLeft = state;
+        this.isHoveredLeft = false;
+        if (state === true) this.changeText("CLOSE", 0, 500);
+        else this.changeText("PROJECTS", 0);
       } else {
+        this.isClickedRight = state;
+        this.isHoveredRight = false;
+        if (state === true) this.changeText("CLOSE", 1, 500);
+        else this.changeText("CONTACTS", 1);
       }
+    },
+    changeText(text, side, delay = 0) {
+      let delayLetters = 10;
+      if (text !== "CLOSE") delayLetters = 0;
+      if (side === 0) {
+        setTimeout(() => {
+          this.changeLeft(text, delayLetters);
+        }, delay);
+      } else {
+        setTimeout(() => {
+          this.changeRight(text, delayLetters);
+        }, delay);
+      }
+    },
+    changeLeft(text, delayLetters) {
+      if (delayLetters === 0) {
+        $(".leftLink").addClass("text-down");
+        setTimeout(() => {
+          this.leftText = text;
+          $(".leftLink").removeClass("text-down");
+        }, 300);
+        return;
+      }
+      $(".leftLink")
+        .children()
+        .each((index, letter) => {
+          setTimeout(() => {
+            $(letter).addClass("letter-up");
+            setTimeout(() => {
+              this.leftText = text;
+              $(letter).removeClass("letter-up");
+            }, 300);
+          }, index * delayLetters);
+        });
+    },
+    changeRight(text, delayLetters) {
+      if (delayLetters === 0) {
+        $(".rightLink").addClass("text-down");
+        setTimeout(() => {
+          this.rightText = text;
+          $(".rightLink").removeClass("text-down");
+        }, 300);
+        return;
+      }
+      $(".rightLink")
+        .children()
+        .each((index, letter) => {
+          setTimeout(() => {
+            $(letter).addClass("letter-up");
+            setTimeout(() => {
+              this.rightText = text;
+              $(letter).removeClass("letter-up");
+            }, 300);
+          }, index * delayLetters);
+        });
     },
   },
 };
