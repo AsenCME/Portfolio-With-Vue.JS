@@ -33,13 +33,22 @@ $easer: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   .leftLink
     text-align: right
 
-.overflow-visible
-  overflow-y: visible !important
-
 .hoveredLeft > .homeLink
   height: 1px
   border-radius: 0
   transform: scaleX(7) translateX(-11.5px)
+
+// .hoveredLeft > .homeLink
+//   animation: animateLeft .6s $easer forwards
+
+// .moveBackLeft > .homeLink
+//   animation: animateLeftBack .6s $easer forwards
+
+// .hoveredRight > .homeLink
+//   animation: animateRight .6s $easer forwards
+
+// .moveBackRight > .homeLink
+//   animation: animateRightBack .6s $easer forwards
   
 .hoveredRight > .homeLink
   height: 1px
@@ -62,4 +71,4 @@ $easer: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   transform: translateY(20px) !important
 
 
-// Maybe animations???
+// TODO: Try two animations after each other

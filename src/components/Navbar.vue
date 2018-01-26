@@ -37,18 +37,20 @@ export default {
       if (side === 0 && !this.isClickedLeft) this.isHoveredLeft = true;
       else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
         this.isHoveredHome = true;
-        let wrap = $(".wrap");
         $(".wrap").css("overflow-y", "visible");
       } else if (side === 2 && !this.isClickedRight) this.isHoveredRight = true;
     },
     mouseOut(side) {
-      if (side === 0) this.isHoveredLeft = false;
-      else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
+      if (side === 0 && !this.isClickedLeft) {
+        this.isHoveredLeft = false;
+      } else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
         this.isHoveredHome = false;
         setTimeout(() => {
           $(".wrap").css("overflow-y", "hidden");
         }, 500);
-      } else this.isHoveredRight = false;
+      } else if (side === 2 && !this.isClickedRight) {
+        this.isHoveredRight = false;
+      }
     },
     linkTo(link) {
       this.$router.push("/" + link);
@@ -82,51 +84,36 @@ export default {
       if (text !== "CLOSE") delayLetters = 0;
       if (side === 0) {
         setTimeout(() => {
-          this.changeLeft(text, delayLetters);
+          this.animateChange(text, delayLetters, 0);
         }, delay);
       } else {
         setTimeout(() => {
-          this.changeRight(text, delayLetters);
+          this.animateChange(text, delayLetters, 1);
         }, delay);
       }
     },
-    changeLeft(text, delayLetters) {
+    animateChange(text, delayLetters, side) {
+      let usedClass = ".rightLink";
+      if (side === 0) {
+        usedClass = ".leftLink";
+      }
       if (delayLetters === 0) {
-        $(".leftLink").addClass("text-down");
+        $(usedClass).addClass("text-down");
         setTimeout(() => {
-          this.leftText = text;
-          $(".leftLink").removeClass("text-down");
+          if (side === 0) this.leftText = text;
+          else this.rightText = text;
+          $(usedClass).removeClass("text-down");
         }, 300);
         return;
       }
-      $(".leftLink")
+      $(usedClass)
         .children()
         .each((index, letter) => {
           setTimeout(() => {
             $(letter).addClass("letter-up");
             setTimeout(() => {
-              this.leftText = text;
-              $(letter).removeClass("letter-up");
-            }, 300);
-          }, index * delayLetters);
-        });
-    },
-    changeRight(text, delayLetters) {
-      if (delayLetters === 0) {
-        $(".rightLink").addClass("text-down");
-        setTimeout(() => {
-          this.rightText = text;
-          $(".rightLink").removeClass("text-down");
-        }, 300);
-        return;
-      }
-      $(".rightLink")
-        .children()
-        .each((index, letter) => {
-          setTimeout(() => {
-            $(letter).addClass("letter-up");
-            setTimeout(() => {
-              this.rightText = text;
+              if (side === 0) this.leftText = text;
+              else this.rightText = text;
               $(letter).removeClass("letter-up");
             }, 300);
           }, index * delayLetters);
