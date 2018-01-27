@@ -3,15 +3,13 @@
     <nav class="wrap" 
         :class="{hoveredLeft: isHoveredLeft, 
                  hoveredRight: isHoveredRight, 
-                 hoveredHome: isHoveredHome, 
-                 constantLeft: isClickedLeft, 
-                 constantRight: isClickedRight}"
+                 hoveredHome: isHoveredHome}"
     >
       <div class="link leftLink" @mouseover="mouseOver(0)" @mouseout="mouseOut(0)" @click="select('projects', 0)">
         <span v-for="(letter, index) of leftText" v-bind:key="index" class="letter">{{letter}}</span>
       </div>
       <div class="homeLink" @mouseover="mouseOver(1)" @mouseout="mouseOut(1)" @click="linkTo('')"></div>
-      <div class="link rightLink" @mouseover="mouseOver(2)" @mouseout="mouseOut(2)" @click="select('contact', 2)">
+      <div class="link rightLink" @mouseover="mouseOver(2)" @mouseout="mouseOut(2)" @click="select('contacts', 2)">
         <span v-for="(letter, index) of rightText" v-bind:key="index" class="letter">{{letter}}</span>
       </div>
     </nav>
@@ -20,9 +18,8 @@
 
 <script>
 //
-// TODO: Home button also changes
 // TODO: Swap component at the right time
-// TODO: Animation ofr swapping components
+// TODO: Animation for swapping components
 //
 export default {
   name: "navbar-component",
@@ -56,7 +53,6 @@ export default {
       if (side === 0 && !this.isClickedLeft) this.isHoveredLeft = true;
       else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
         this.isHoveredHome = true;
-        $(".wrap").css("overflow-y", "visible");
       } else if (side === 2 && !this.isClickedRight) this.isHoveredRight = true;
     },
     mouseOut(side) {
@@ -64,27 +60,50 @@ export default {
         this.isHoveredLeft = false;
       } else if (side === 1 && !(this.isHoveredLeft || this.isHoveredRight)) {
         this.isHoveredHome = false;
-        setTimeout(() => {
-          $(".wrap").css("overflow-y", "hidden");
-        }, 500);
       } else if (side === 2 && !this.isClickedRight) {
         this.isHoveredRight = false;
       }
     },
-    linkTo() {
-      if (this.leftText === "CLOSE" || this.rightText === "CLOSE") {
-        this.$router.push("/");
+    linkTo(side) {
+      let path = this.$route.path;
+      if (side === 0) {
+        if (path === "/projects") {
+          this.$router.push("/");
+        } else {
+          this.$router.push("/projects");
+        }
+      } else if (side === 2) {
+        if (path === "/contacts") {
+          this.$router.push("/");
+        } else {
+          this.$router.push("/contacts");
+        }
       } else {
-        this.$router.push("/" + this.linkToGoTo);
+        this.$router.push("/");
+        this.isHoveredHome = false;
+        setTimeout(() => {
+          if (this.leftText === "CLOSE") {
+            this.isHoveredLeft = false;
+            this.isClickedLeft = false;
+            this.animateChange("PROJECTS", 0, 0);
+          }
+          if (this.rightText === "CLOSE") {
+            this.isHoveredRight = false;
+            this.isClickedRight = false;
+            this.animateChange("CONTACTS", 0, 2);
+          }
+        }, 500);
       }
     },
     select(link, side) {
       this.linkToGoTo = link;
       if (side === 0) {
+        if (this.isClickedRight) this.changeState(2, false);
         if (this.isClickedLeft) {
           this.changeState(0, false);
         } else this.changeState(0, true);
       } else if (side === 2) {
+        if (this.isClickedLeft) this.changeState(0, false);
         if (this.isClickedRight) {
           this.changeState(2, false);
         } else this.changeState(2, true);
@@ -99,7 +118,7 @@ export default {
       } else {
         this.isClickedRight = state;
         this.isHoveredRight = false;
-        if (state === true) this.changeText("CLOSE", 1, 500);
+        if (state === true) this.changeText("CLOSE", 2, 500);
         else this.changeText("CONTACTS", 2);
       }
     },
@@ -109,12 +128,12 @@ export default {
       if (side === 0) {
         setTimeout(() => {
           this.animateChange(text, delayLetters, 0);
-          this.linkTo();
+          this.linkTo(side);
         }, delay);
       } else {
         setTimeout(() => {
-          this.animateChange(text, delayLetters, 1);
-          this.linkTo();
+          this.animateChange(text, delayLetters, 2);
+          this.linkTo(side);
         }, delay);
       }
     },

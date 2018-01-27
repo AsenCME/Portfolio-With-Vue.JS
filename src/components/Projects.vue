@@ -1,5 +1,5 @@
 <template>
-  <div id="Project">
+  <div id="projects">
       Project Component
   </div>
 </template>

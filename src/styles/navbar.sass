@@ -10,9 +10,10 @@ $easer: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   flex-direction: row
   justify-content: center
   align-items: center
-  overflow-y: hidden
+  overflow-y: visible
   .link
     width: 100px
+    text-align: center
     text-transform: uppercase
     transition: .3s $easer
     font-size: 18px
@@ -30,30 +31,16 @@ $easer: cubic-bezier(0.68, -0.55, 0.265, 1.55);
     transition: .5s $easer .15s
     background: white
     margin: 0px 20px
-  .leftLink
-    text-align: right
 
 .hoveredLeft > .homeLink
   height: 1px
   border-radius: 0
-  transform: scaleX(7) translateX(-11.5px)
-
-// .hoveredLeft > .homeLink
-//   animation: animateLeft .6s $easer forwards
-
-// .moveBackLeft > .homeLink
-//   animation: animateLeftBack .6s $easer forwards
-
-// .hoveredRight > .homeLink
-//   animation: animateRight .6s $easer forwards
-
-// .moveBackRight > .homeLink
-//   animation: animateRightBack .6s $easer forwards
+  transform: scaleX(7) translateX(-12.5px)
   
 .hoveredRight > .homeLink
   height: 1px
   border-radius: 0
-  transform: scaleX(7) translateX(12px)
+  transform: scaleX(7) translateX(12.5px)
 
 .hoveredHome > .homeLink
   transform: scale(2.5)
@@ -65,9 +52,11 @@ $easer: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   transition: .3s $easer
 
 .letter-up
+  opacity: 0
   transform: translateY(-20px) !important
 
 .text-down
+  opacity: 0
   transform: translateY(20px) !important
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="contact">
+  <div id="contacts">
       Contact Component
   </div>
 </template>
@@ -9,5 +9,5 @@ export default {};
 </script>
 
 <style lang="sass" scoped>
-@import '../styles/projects.sass'
+@import '../styles/contacts.sass'
 </style>
